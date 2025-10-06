@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Healthcare Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: #ff69b4; /* Pink */
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar .brand {
+            color: white;
+            font-size: 21px; /* Increased by 15% from 18px */
+            margin-right: 0px; /* Adjusted from 20px */
+            margin-left: -30px; /* Moved 3cm left (approx 30px) */
+            line-height: 1;
+        }
+        .navbar .brand .creator {
+            font-size: 14px; /* Increased by 15% from 12px */
+            display: block;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+        }
+        .hero-grid {
+            position: relative;
+            padding: 50px 0;
+            background-color: #ecf0f1;
+            overflow: hidden;
+            height: 550px; /* Extended by 2cm (20px) from 450px */
+        }
+        .photo-grid-container {
+            display: flex;
+            justify-content: center;
+        }
+        .photo-column {
+            width: 18%;
+            height: 550px; /* Match hero-grid height */
+            overflow: hidden;
+            position: relative;
+        }
+        .photo-column img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .scroll-down {
+            animation: scroll-down 10s linear infinite;
+        }
+        .scroll-up {
+            animation: scroll-up 10s linear infinite;
+        }
+        @keyframes scroll-down {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-750px); }
+        }
+        @keyframes scroll-up {
+            0% { transform: translateY(-750px); }
+            100% { transform: translateY(0); }
+        }
+        .scroll {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .floating-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1;
+        }
+        .floating-text h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .floating-text p {
+            margin: 10px 0 0;
+            font-size: 16px;
+        }
+        .services-section {
+            padding: 50px;
+            text-align: center;
+            background-color: white;
+        }
+        .services-section h2 {
+            font-size: 28px;
+            color: black;
+            background-color: #ffff00; /* Yellow */
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .services-photos {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .service-item {
+            width: 22%;
+            margin-bottom: 20px;
+        }
+        .service-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .service-item h3 {
+            font-size: 18px;
+            margin: 10px 0 5px;
+        }
+        .service-item h3 span {
+            margin-right: 5px;
+        }
+        .service-item p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+        .appointment-section {
+            padding: 50px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .appointment-section h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            background-color: #ff4444; /* Red */
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .appointment-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .appointment-type {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .appointment-type label {
+            width: 48%;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .appointment-type label:hover {
+            background-color: #e0e0e0;
+        }
+        .appointment-type input[type="radio"] {
+            margin-right: 10px;
+        }
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .form-row .field {
+            width: 48%;
+        }
+        .form-row label,
+        .appointment-form label {
+            display: block;
+            text-align: left;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-row input,
+        .form-row select,
+        .appointment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .appointment-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .appointment-form button {
+            background-color: #ff69b4; /* Pink */
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .appointment-form button:hover {
+            background-color: #ff1493; /* Darker pink on hover */
+        }
+        .hospitals-section {
+            padding: 50px;
+            text-align: center;
+            background-color: white;
+        }
+        .hospitals-section h2 {
+            font-size: 28px;
+            color: black;
+            background-color: #90ee90; /* Light green */
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 50px; /* Space below box */
+        }
+        .hospitals-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .hospital-item {
+            width: 45%;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .hospital-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .hospital-item h3 {
+            font-size: 20px;
+            margin: 10px 0 5px;
+            color: #2c3e50;
+        }
+        .hospital-item ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .hospital-item ul li {
+            margin-bottom: 5px;
+        }
+        .medicines-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .medicines-section h2 {
+            font-size: 28px;
+            color: black;
+            background-color: #add8e6; /* Light blue */
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 50px; /* Space below box */
+        }
+        .medicines-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .medicine-item {
+            width: 30%;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .medicine-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .medicine-item h3 {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Space between title and button */
+        }
+        .medicine-item .order-btn {
+            background-color: #ff4444; /* Red */
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .medicine-item .order-btn:hover {
+            background-color: #cc0000; /* Darker red on hover */
+        }
+        .medicine-item p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ff69b4; /* Pink */
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <span class="brand">HealthCare Hub ❤️<br><span class="creator">Created by Siva Bhargav</span></span>
+        <a href="#home">Home</a>
+        <a href="#appointments">Appointments</a>
+        <a href="#hospitals">Hospitals</a>
+        <a href="#medicines">Order Medicines</a>
+    </div>
+
+    <!-- Hero Section with Scrolling Grid and Floating Text -->
+    <div class="hero-grid">
+        <div class="photo-grid-container">
+            <!-- Column 1: Bottom to Top -->
+            <div class="photo-column">
+                <div class="scroll scroll-up">
+                    <img src="col1-photo1.jpg" alt="Column 1 Photo 1">
+                    <img src="col1-photo2.jpg" alt="Column 1 Photo 2">
+                    <img src="col1-photo3.jpg" alt="Column 1 Photo 3">
+                    <img src="col1-photo4.jpg" alt="Column 1 Photo 4">
+                    <img src="col1-photo5.jpg" alt="Column 1 Photo 5">
+                    <img src="col1-photo1.jpg" alt="Column 1 Photo 1">
+                    <img src="col1-photo2.jpg" alt="Column 1 Photo 2">
+                    <img src="col1-photo3.jpg" alt="Column 1 Photo 3">
+                    <img src="col1-photo4.jpg" alt="Column 1 Photo 4">
+                    <img src="col1-photo5.jpg" alt="Column 1 Photo 5">
+                </div>
+            </div>
+            <!-- Column 2: Top to Bottom -->
+            <div class="photo-column">
+                <div class="scroll scroll-down">
+                    <img src="col2-photo1.jpg" alt="Column 2 Photo 1">
+                    <img src="col2-photo2.jpg" alt="Column 2 Photo 2">
+                    <img src="col2-photo3.jpg" alt="Column 2 Photo 3">
+                    <img src="col2-photo4.jpg" alt="Column 2 Photo 4">
+                    <img src="col2-photo5.jpg" alt="Column 2 Photo 5">
+                    <img src="col2-photo1.jpg" alt="Column 2 Photo 1">
+                    <img src="col2-photo2.jpg" alt="Column 2 Photo 2">
+                    <img src="col2-photo3.jpg" alt="Column 2 Photo 3">
+                    <img src="col2-photo4.jpg" alt="Column 2 Photo 4">
+                    <img src="col2-photo5.jpg" alt="Column 2 Photo 5">
+                </div>
+            </div>
+            <!-- Column 3: Bottom to Top -->
+            <div class="photo-column">
+                <div class="scroll scroll-up">
+                    <img src="col3-photo1.jpg" alt="Column 3 Photo 1">
+                    <img src="col3-photo2.jpg" alt="Column 3 Photo 2">
+                    <img src="col3-photo3.jpg" alt="Column 3 Photo 3">
+                    <img src="col3-photo4.jpg" alt="Column 3 Photo 4">
+                    <img src="col3-photo5.jpg" alt="Column 3 Photo 5">
+                    <img src="col3-photo1.jpg" alt="Column 3 Photo 1">
+                    <img src="col3-photo2.jpg" alt="Column 3 Photo 2">
+                    <img src="col3-photo3.jpg" alt="Column 3 Photo 3">
+                    <img src="col3-photo4.jpg" alt="Column 3 Photo 4">
+                    <img src="col3-photo5.jpg" alt="Column 3 Photo 5">
+                </div>
+            </div>
+            <!-- Column 4: Top to Bottom -->
+            <div class="photo-column">
+                <div class="scroll scroll-down">
+                    <img src="col4-photo1.jpg" alt="Column 4 Photo 1">
+                    <img src="col4-photo2.jpg" alt="Column 4 Photo 2">
+                    <img src="col4-photo3.jpg" alt="Column 4 Photo 3">
+                    <img src="col4-photo4.jpg" alt="Column 4 Photo 4">
+                    <img src="col4-photo5.jpg" alt="Column 4 Photo 5">
+                    <img src="col4-photo1.jpg" alt="Column 4 Photo 1">
+                    <img src="col4-photo2.jpg" alt="Column 4 Photo 2">
+                    <img src="col4-photo3.jpg" alt="Column 4 Photo 3">
+                    <img src="col4-photo4.jpg" alt="Column 4 Photo 4">
+                    <img src="col4-photo5.jpg" alt="Column 4 Photo 5">
+                </div>
+            </div>
+            <!-- Column 5: Bottom to Top -->
+            <div class="photo-column">
+                <div class="scroll scroll-up">
+                    <img src="col5-photo1.jpg" alt="Column 5 Photo 1">
+                    <img src="col5-photo2.jpg" alt="Column 5 Photo 2">
+                    <img src="col5-photo3.jpg" alt="Column 5 Photo 3">
+                    <img src="col5-photo4.jpg" alt="Column 5 Photo 4">
+                    <img src="col5-photo5.jpg" alt="Column 5 Photo 5">
+                    <img src="col5-photo1.jpg" alt="Column 5 Photo 1">
+                    <img src="col5-photo2.jpg" alt="Column 5 Photo 2">
+                    <img src="col5-photo3.jpg" alt="Column 5 Photo 3">
+                    <img src="col5-photo4.jpg" alt="Column 5 Photo 4">
+                    <img src="col5-photo5.jpg" alt="Column 5 Photo 5">
+                </div>
+            </div>
+        </div>
+        <!-- Floating Text -->
+        <div class="floating-text">
+            <h1>Welcome to Siva Bhargav Healthcare Hub ❤️</h1>
+            <p>Access quality healthcare services, book appointments, and connect with top medical professionals near you.</p>
+        </div>
+    </div>
+
+    <!-- Our Health Services Section -->
+    <div class="services-section">
+        <h2>Our Health Services</h2>
+        <div class="services-photos">
+            <div class="service-item">
+                <img src="service-photo1.jpg" alt="Service Photo 1">
+                <h3><span>📅</span> Book Appointments</h3>
+                <p>Schedule appointments with specialists at your convenience</p>
+            </div>
+            <div class="service-item">
+                <img src="service-photo2.jpg" alt="Service Photo 2">
+                <h3><span>💻</span> Online Consultation</h3>
+                <p>Connect with doctors virtually from the comfort of your home</p>
+            </div>
+            <div class="service-item">
+                <img src="service-photo3.jpg" alt="Service Photo 3">
+                <h3><span>🔍</span> Find Specialists</h3>
+                <p>Locate specialized doctors based on your medical needs</p>
+            </div>
+            <div class="service-item">
+                <img src="service-photo4.jpg" alt="Service Photo 4">
+                <h3><span>🕒</span> 24/7 Support</h3>
+                <p>Round-the-clock medical assistance and emergency support</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Booking Section -->
+    <div class="appointment-section" id="appointments">
+        <h2>Book an Appointment</h2>
+        <form class="appointment-form" action="https://f87qcg51fb.execute-api.ap-southeast-1.amazonaws.com/HealthcareHub/save-appointment" method="POST">
+            <div class="appointment-type">
+                <label><input type="radio" name="appointment-type" value="in-person" required> 👩‍⚕️ In Person Visit</label>
+                <label><input type="radio" name="appointment-type" value="online"> 💻 Online Consultation</label>
+            </div>
+            <div class="form-row">
+                <div class="field">
+                    <label>👤 Patient Name</label>
+                    <input type="text" name="full-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="field">
+                    <label>📞 Phone Number</label>
+                    <input type="tel" name="phone-number" placeholder="Enter your phone number" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="field">
+                    <label>📅 Preferred Date</label>
+                    <input type="date" name="preferred-date" required>
+                </div>
+                <div class="field">
+                    <label>⏰ Preferred Time</label>
+                    <select name="preferred-time" required>
+                        <option value="" disabled selected>Select a time</option>
+                        <option value="12:00 AM">12:00 AM</option>
+                        <option value="1:00 AM">1:00 AM</option>
+                        <option value="2:00 AM">2:00 AM</option>
+                        <option value="3:00 AM">3:00 AM</option>
+                        <option value="4:00 AM">4:00 AM</option>
+                        <option value="5:00 AM">5:00 AM</option>
+                        <option value="6:00 AM">6:00 AM</option>
+                        <option value="7:00 AM">7:00 AM</option>
+                        <option value="8:00 AM">8:00 AM</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="7:00 PM">7:00 PM</option>
+                        <option value="8:00 PM">8:00 PM</option>
+                        <option value="9:00 PM">9:00 PM</option>
+                        <option value="10:00 PM">10:00 PM</option>
+                        <option value="11:00 PM">11:00 PM</option>
+                    </select>
+                </div>
+            </div>
+            <label>📝 Reason for Visit</label>
+            <textarea name="reason" placeholder="Please describe your symptoms or reason for visit" required></textarea>
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+
+    <!-- Hospitals Section -->
+    <div class="hospitals-section" id="hospitals">
+        <h2>Hospitals</h2>
+        <div class="hospitals-grid">
+            <div class="hospital-item">
+                <img src="kims-hospital.jpg" alt="KIMS Hospital">
+                <h3>1. KIMS Hospital</h3>
+                <ul>
+                    <li>Multi-specialty care</li>
+                    <li>Branches across AP</li>
+                    <li>Advanced surgeries</li>
+                    <li>24/7 emergency</li>
+                </ul>
+            </div>
+            <div class="hospital-item">
+                <img src="medicover-hospital.jpg" alt="Medicover Hospital">
+                <h3>2. Medicover Hospital</h3>
+                <ul>
+                    <li>European standards</li>
+                    <li>Cardiology, Ortho</li>
+                    <li>24/7 support</li>
+                    <li>Kurnool, Vizianagaram</li>
+                </ul>
+            </div>
+            <div class="hospital-item">
+                <img src="narayana-health.jpg" alt="Narayana Health">
+                <h3>3. Narayana Health</h3>
+                <ul>
+                    <li>Affordable care</li>
+                    <li>Heart, Neuro, Ortho</li>
+                    <li>Top specialists</li>
+                    <li>Multi-city presence</li>
+                </ul>
+            </div>
+            <div class="hospital-item">
+                <img src="apollo-hospitals.jpg" alt="Apollo Hospitals">
+                <h3>4. Apollo Hospitals</h3>
+                <ul>
+                    <li>Premium healthcare</li>
+                    <li>Liver, Neuro, Ortho</li>
+                    <li>24/7 services</li>
+                    <li>Visakhapatnam, Hyderabad</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Medicines Section -->
+    <div class="medicines-section" id="medicines">
+        <h2>Order Medicines</h2>
+        <div class="medicines-grid">
+            <div class="medicine-item">
+                <img src="paracetamol.jpg" alt="Paracetamol">
+                <h3>Paracetamol <button class="order-btn">Order</button></h3>
+                <p>Fever</p>
+            </div>
+            <div class="medicine-item">
+                <img src="diclopin.jpg" alt="Diclopin">
+                <h3>Diclopin <button class="order-btn">Order</button></h3>
+                <p>Pain, Cold, Fever</p>
+            </div>
+            <div class="medicine-item">
+                <img src="telma20.jpg" alt="Telma 20">
+                <h3>Telma 20 <button class="order-btn">Order</button></h3>
+                <p>High BP tablet</p>
+            </div>
+            <div class="medicine-item">
+                <img src="pantaprazole.jpg" alt="Pantaprazole">
+                <h3>Pantaprazole <button class="order-btn">Order</button></h3>
+                <p>Gastro</p>
+            </div>
+            <div class="medicine-item">
+                <img src="sabirtan40mg.jpg" alt="Sabirtan 40mg">
+                <h3>Sabirtan 40mg <button class="order-btn">Order</button></h3>
+                <p>Heart attack</p>
+            </div>
+            <div class="medicine-item">
+                <img src="ecosprin20mg.jpg" alt="Ecosprin 20 Mg">
+                <h3>Ecosprin 20 Mg <button class="order-btn">Order</button></h3>
+                <p>Cholesterol</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 My Healthcare Demo. All rights reserved.</p>
+    </div>
+</body>
+</html>
